@@ -15,6 +15,10 @@ function App() {
   const [hideFinishBtn, setHideFinishBtn] = useState("d-none");
 
   const [choiceBtnDisable, setChoiceBtnDisable] = useState(false);
+  // State gợi ý nhà thông thái
+  const [stateSuggestion, setSuggestion] = useState('');
+  const [stateSuggestionCss, setSuggestionCss] = useState('d-none');
+
   const [score, setScore] = useState(0);
   const [stateMoneyBonus, setMoneyBonus] = useState(0);
 
@@ -27,25 +31,28 @@ function App() {
     setQuestionPage('d-block, d-flex')
   }
 
+ 
   function checkAnswer(e) { console.log('Kiểm tra kết quả')
-    let current_answer = ( quiz[currentQuestionNumber].ans ) ; console.log('current_answer', current_answer); console.log('currentQuestionNumber Index', currentQuestionNumber)
+    let current_answer = ( quiz[currentQuestionNumber].ans ).trim(); console.log('current_answer', current_answer); console.log('currentQuestionNumber Index', currentQuestionNumber)
     
-    let choice = ( e.target.textContent );  console.log('choice', choice)
+    let choice = ( e.target.textContent ).trim();  console.log('choice', choice)
 
     if (choice === current_answer) { console.log('Trả lời đúng')
-      alert('Bạn đã trả lời ĐÚNG')
+      // alert('Bạn đã trả lời ĐÚNG')
       setScore(score + 10);
       let moneyBonusNum = MONEY_BONUS[currentQuestionNumber]; console.log('moneyBonusNum', moneyBonusNum)
       setMoneyBonus( moneyBonusNum )  
-      nextQuestion()
+      setTimeout( nextQuestion(), 2000);
+      
     } 
+
     else { console.log('Trả lời sai')
       alert('Bạn đã trả lời SAI');
       // Hiện thông báo kết quả đúng là gì và trả về số tiền hiện có
       alert(`Rất tiếc bạn đã trả lời sai đáp án, bạn sẽ ra về với số tiền thưởng ${stateMoneyBonus}`)
       stopTheGame() 
     }
-
+    
     if (currentQuestionNumber === quiz.length - 1) {
       setHideNextBtn('d-none');
       setHideFinishBtn('d-block, d-flex');
@@ -53,8 +60,16 @@ function App() {
     setChoiceBtnDisable(true);
     setNextBtnDisable(false);
   }
+  // Nút hỏi các nhà thông thái => đúng 100%
+  function eruditeSuggestion() { 
+    let current_answer = ( quiz[currentQuestionNumber].ans ).trim(); console.log(`Chúng tôi khuyên bạn chọn đáp án: ${current_answer}`)
+    setSuggestion(current_answer);
+    setSuggestionCss('d-block')
+  }
   // Nút chuyển câu
   function nextQuestion() { console.log('Câu kế tiếp')
+    setSuggestionCss('d-none')
+
     if (currentQuestionNumber < quiz.length - 1) {
       setCurrentQuestionNumber(currentQuestionNumber + 1);
       setChoiceBtnDisable(false);
@@ -99,11 +114,11 @@ function App() {
       <div className=" infor-btn-points-gift container ">     
 
         <span>
-          <div className=" number-of-question "> Câu hỏi: <b>{currentQuestionNumber + 1}</b>/10 </div>&nbsp;
+          <div className=" number-of-question "> Câu hỏi: <b>{currentQuestionNumber + 1}</b>/10 </div>
         </span>
 
-        <span>
-          <div className=" money-bonus ">Điểm&nbsp;{score} &nbsp; <i className="fas fa-dollar-sign" /> {stateMoneyBonus} vnđ</div>&nbsp;
+        <div className=' moneys-helps '>
+          <div className=" money-bonus ">Điểm&nbsp;{score} &nbsp; <i className="fas fa-dollar-sign" /> {stateMoneyBonus} vnđ</div>
 
           <div className=" helps ">
             {/* Bỏ đi ngẫu nhiên 2 đáp án sai */}
@@ -113,10 +128,11 @@ function App() {
             {/* Hỏi ý  kiến của khán giả - nhiều người-random 4 câu trả lời -  2 đáp án ko chắc  */}
             <span> <i className="fas fa-users" /> </span>
             {/* Hỏi ý kiến nhà thông thái - đáp án đúng 100% */}
-            <span> <i className="fas fa-graduation-cap" /> </span>
+            <span onClick = { eruditeSuggestion } > <i className="fas fa-graduation-cap" /> </span>
+            <span className={ `eruditeSuggestion  ${stateSuggestionCss} ` }> {stateSuggestion} </span>
           </div>
 
-        </span>
+        </div>
 
       </div>
 

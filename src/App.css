@@ -49,8 +49,13 @@
 
 body {
   background-image: url('./banner-img.png') ;
-  background-repeat: no-repeat;
-  background-size: cover;
+  /* background-repeat: no-repeat;
+  background-size: cover; */
+
+  background-position: top;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
 }
 /* Mà hình che đi lúc mới vào */
 .start-page {
@@ -162,6 +167,12 @@ body {
   justify-content: space-between;
   align-items: center;
 }
+.moneys-helps {
+  display: flex;
+  flex-direction: row;
+  grid-gap: 2px;
+}
+
 .number-of-question {
   padding: 6px 12px;
   color: rgb(255, 255, 255);
@@ -194,6 +205,8 @@ body {
   align-items: center;
   grid-gap: 12px;
   cursor: pointer;
+
+  position: relative;
 }
 .helps span {
     width: auto!important;
@@ -203,7 +216,15 @@ body {
   color: rgb(228, 127, 19);
   transform: scale(1.1);
 }
+.eruditeSuggestion {
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.5);
+  color: white;
 
+  position: absolute;
+  top: 110%;
+  right: 0%;
+}
 /* Phần câu hỏi và câu trả lời */
 .quiz-form {
   /* border: 0.1px solid violet; */
@@ -367,8 +388,8 @@ body {
 .result-page {
   background: rgba(228, 133, 8, 0.8);
   margin: auto;
-  width: 50%;
-  padding: 20px 0;
+  /* width: 50%; */
+  padding: 20px 8px;
 
 }
 .result-page p {
@@ -415,6 +436,12 @@ body {
   }
   .infor-btn-points-gift span {
     width: 100%;
+  }
+  .moneys-helps {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    grid-gap: 4px;
   }
   .number-of-question,
   .skip-question,

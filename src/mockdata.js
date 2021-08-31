@@ -34,7 +34,7 @@ export const quiz = [
     id: 5,
     question:
       "Câu 5: Trên mặt một đồng hồ cơ có số chỉ giờ, đối diện với số 9 là số mấy? ",
-    choices: [" A: Số 3", " B: Số 6 ", " C: Số 1  ", " D: Số 12 "],
+    choices: [" A: Số 3 ", " B: Số 6 ", " C: Số 1  ", " D: Số 12 "],
     ans: " A: Số 3 ",
   },
   {
