@@ -46,14 +46,69 @@
   border-radius: 6px;
   transition: all 0.3s ease;
 }
-.quiz-container {
-  /* border: 0.1px solid red; */
-  height: 100vh;
-  /* background-color: rgba(0, 0, 0, 0.8); */
+
+body {
   background-image: url('./banner-img.png') ;
   background-repeat: no-repeat;
   background-size: cover;
+}
+/* Mà hình che đi lúc mới vào */
+.start-page {
+  /* border: 1px solid red; */
+  margin-top: 25%;
+  /* min-height: 150px; */
+}
+.App-question-area {
+  min-height: 150px;
+}
+
+
+.App-start-btn {
+  background-color: rgba(19, 162, 228, 0.8);
+  color: white;
+  transition: 0.5s ease-in-out;
+  -webkit-transition: 0.5s ease-in-out;
+  -moz-transition: 0.5s ease-in-out;
+  -ms-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
   
+  animation: up-down 2s 0.5s infinite;
+  -webkit-animation: up-down 2s 0.5s infinite;
+}
+.App-start-btn:hover {
+  background-color: rgba(19, 162, 228, 0.6);
+  color: white;
+}
+
+@keyframes up-down {
+  0% {
+    transform: translateY(0px);
+    -webkit-transform: translateY(0px);
+    -moz-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    -o-transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+    -webkit-transform: translateY(-15px);
+    -moz-transform: translateY(-15px);
+    -ms-transform: translateY(-15px);
+    -o-transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0px);
+    -webkit-transform: translateY(0px);
+    -moz-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    -o-transform: translateY(0px);
+  }
+}
+
+.quiz-container {
+  /* border: 0.1px solid red; */
+  /* height: 100vh; */
+  /* background-color: rgba(0, 0, 0, 0.8); */
+
   
   border-radius: 0px;
   padding: 20px 0px;
@@ -265,7 +320,7 @@
 
 /* Nút chuyển câu */
 .buttons {
-  width: 400px;
+  /* width: 400px; */
   
   display: flex;
   flex-direction: row;
@@ -274,22 +329,24 @@
   grid-gap: 8px;
 }
 .buttons span {
-  width: 100%;
+  /* width: 100%; */
   text-align: center;
 }
 .buttons span:active {
   transform: scale(1.05);
 }
+
 .skip-question {
   background-color: rgb(255, 255, 255);
   color: rgb(81, 29, 133);
-  padding: 6px 12px;
+  padding: 8px 20px;
   cursor: pointer;
 }
 .skip-question:hover {
-  background-color: rgb(81, 29, 133);
-  color: rgb(255, 255, 255);
+  background-color: rgb(197, 164, 230);
+  color: rgb(81, 29, 133);
 }
+
 .stop-quiz {
   background-color: rgb(255, 255, 255);
   color: rgb(81, 29, 133);
@@ -299,6 +356,27 @@
 .stop-quiz:hover {
   background-color: rgba(228,35,19, 1);
   color: rgb(255, 255, 255);
+}
+
+/* Màn thông báo kết quả, chúc mừng */
+.result-page {
+
+  width: 100%;
+  color: rgb(255, 255, 255);
+  margin-top: 20%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.result-page span {
+  background: rgba(228, 133, 8, 0.8);
+  width: 50%;
+}
+
+.result-page p {
+  color: white;
 }
 /* Start Responsive by @Media same bootstrap */
 
