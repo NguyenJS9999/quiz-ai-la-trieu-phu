@@ -28,19 +28,22 @@ function App() {
   }
 
   function checkAnswer(e) { console.log('Kiểm tra kết quả')
-    let current_answer = quiz[currentQuestionNumber].ans; console.log('current_answer', current_answer); console.log('currentQuestionNumber Index', currentQuestionNumber)
+    let current_answer = ( quiz[currentQuestionNumber].ans ) ; console.log('current_answer', current_answer); console.log('currentQuestionNumber Index', currentQuestionNumber)
     
-    let choice = e.target.textContent; console.log('choice', choice)
+    let choice = ( e.target.textContent );  console.log('choice', choice)
 
     if (choice === current_answer) { console.log('Trả lời đúng')
-      // alert('Bạn đã trả lời ĐÚNG')
+      alert('Bạn đã trả lời ĐÚNG')
       setScore(score + 10);
-
-      
-    } else { console.log('Trả lời sai')
-      // alert('Bạn đã trả lời SAI')
       let moneyBonusNum = MONEY_BONUS[currentQuestionNumber]; console.log('moneyBonusNum', moneyBonusNum)
-      setMoneyBonus( moneyBonusNum )
+      setMoneyBonus( moneyBonusNum )  
+      nextQuestion()
+    } 
+    else { console.log('Trả lời sai')
+      alert('Bạn đã trả lời SAI');
+      // Hiện thông báo kết quả đúng là gì và trả về số tiền hiện có
+      alert(`Rất tiếc bạn đã trả lời sai đáp án, bạn sẽ ra về với số tiền thưởng ${stateMoneyBonus}`)
+      stopTheGame() 
     }
 
     if (currentQuestionNumber === quiz.length - 1) {
@@ -57,6 +60,12 @@ function App() {
       setChoiceBtnDisable(false);
     };
     setNextBtnDisable(true);
+  }
+  // Dừng cuộc chơi
+  function stopTheGame() { console.log('Dừng cuộc chơi vì không chắc chắn đáp án')
+    setQuestionPage('d-none');
+    setResultPage('d-block, d-flex');    
+    (score > 0) ? setMessage("Chúc mừng bạn đã đã hoàn thành cuộc chơi!") : setMessage("Hơi tiếc bạn chưa đúng câu nào!")
   }
   // Màn thông báo kết quả
   function showResultPage() {
@@ -126,29 +135,30 @@ function App() {
         <div className=" answers  choices-box" id="content">
 
           <div onClick={checkAnswer} disabled={choiceBtnDisable} className=" answer " id="option-1">
-            <span className="numerical-order ">1</span>
-            <div> { current_question.choices[0] } </div>
+            { current_question.choices[0] }
+            {/* <span className="numerical-order ">1</span> */}
           </div>
 
           <div onClick={checkAnswer} disabled={choiceBtnDisable} className=" answer " id="option-2">
-            <span className="numerical-order ">2</span>
-            <div> { current_question.choices[1] } </div>
+            { current_question.choices[1] }
+            {/* <span className="numerical-order ">2</span> */}
           </div>
 
           <div onClick={checkAnswer} disabled={choiceBtnDisable} className=" answer " id="option-3">
-            <span className="numerical-order ">3</span>
-            <div> { current_question.choices[2] } </div>
+            { current_question.choices[2] }
+            {/* <span className="numerical-order ">3</span> */}
           </div>
 
           <div onClick={checkAnswer} disabled={choiceBtnDisable} className=" answer " id="option-4">
-            <span className="numerical-order ">4</span>
-            <div> { current_question.choices[3] } </div>
+            { current_question.choices[3] }
+            {/* <span className="numerical-order ">4</span> */}
           </div>
 
         </div>
         
         <div className=" buttons ">
-          <span className= { ` ${ hideNextBtn } skip-question `} onClick={nextQuestion} disabled={nextBtnDisable}  >&nbsp;Câu tiếp&nbsp;</span>
+          {/* <span className= { ` ${ hideNextBtn } skip-question `} onClick={nextQuestion} disabled={nextBtnDisable}  >&nbsp;Câu tiếp&nbsp;</span>*/}
+          <span className= { ` ${ hideNextBtn } skip-question `} onClick={stopTheGame} disabled={nextBtnDisable}  >&nbsp;Dừng cuộc chơi&nbsp;</span>
           <span className={`${hideFinishBtn} stop-quiz `} onClick={showResultPage} >Finish</span>
 
         </div>
@@ -157,17 +167,18 @@ function App() {
     </section>
     {/* Màn hình để chơi */}
 
-    <div className={` result-page   container-fluid p-0 ${resultPage}`}>
-      <span>
+    <div className={` result-page-container   container-fluid p-0 ${resultPage}`}>
+      <div className=' result-page ' >
         <p className='h2 text-center'>{message}</p>
         <p className='h3 text-center'>
-          <span>Số tiền bạn nhận được: { stateMoneyBonus }</span> <br/>
-          Và <span className="text-success">{score}</span> điểm 
+          <span>Số tiền bạn nhận được: <b>{ stateMoneyBonus }&nbsp;vnđ</b></span> <br/>
+          Và <span className="text-success"><b>{score}</b></span> điểm 
           
         </p>
 
-        <button type="button" className="App-start-btn " onClick={replay}>Replay</button>
-      </span>
+        <button type="button" className="App-reply-btn " onClick={replay}>Replay</button>
+
+      </div>
     </div>
       
   

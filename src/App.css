@@ -62,7 +62,6 @@ body {
   min-height: 150px;
 }
 
-
 .App-start-btn {
   background-color: rgba(19, 162, 228, 0.8);
   color: white;
@@ -75,6 +74,7 @@ body {
   animation: up-down 2s 0.5s infinite;
   -webkit-animation: up-down 2s 0.5s infinite;
 }
+
 .App-start-btn:hover {
   background-color: rgba(19, 162, 228, 0.6);
   color: white;
@@ -359,23 +359,47 @@ body {
 }
 
 /* Màn thông báo kết quả, chúc mừng */
-.result-page {
-
+.result-page-container {
   width: 100%;
   color: rgb(255, 255, 255);
   margin-top: 20%;
+}
+.result-page {
+  background: rgba(228, 133, 8, 0.8);
+  margin: auto;
+  width: 50%;
+  padding: 20px 0;
+
+}
+.result-page p {
+  color: white;
+}
+
+.App-reply-btn {
+  background-color: rgba(113, 228, 19, 0.8);
+  color: white;
+  margin: auto;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 6px;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-.result-page span {
-  background: rgba(228, 133, 8, 0.8);
-  width: 50%;
+
+  transition: 0.5s ease-in-out;
+  -webkit-transition: 0.5s ease-in-out;
+  -moz-transition: 0.5s ease-in-out;
+  -ms-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
+  
+  animation: up-down 2s 0.5s infinite;
+  -webkit-animation: up-down 2s 0.5s infinite;
 }
 
-.result-page p {
+.App-reply-btn:hover {
+  background-color: rgba(19, 162, 228, 0.6);
   color: white;
 }
 /* Start Responsive by @Media same bootstrap */
