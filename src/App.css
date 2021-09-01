@@ -42,20 +42,17 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: "Dela Gothic One",cursive;
+  font-family: "Dela Gothic One", cursive;
   border-radius: 6px;
   transition: all 0.3s ease;
 }
 
 body {
-  background-image: url('./banner-img.png') ;
-  /* background-repeat: no-repeat;
-  background-size: cover; */
-
+  background-image: url("./banner-img.png");
   background-position: top;
-    background-size: cover;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 /* Mà hình che đi lúc mới vào */
 .start-page {
@@ -75,7 +72,7 @@ body {
   -moz-transition: 0.5s ease-in-out;
   -ms-transition: 0.5s ease-in-out;
   -o-transition: 0.5s ease-in-out;
-  
+
   animation: up-down 2s 0.5s infinite;
   -webkit-animation: up-down 2s 0.5s infinite;
 }
@@ -114,7 +111,6 @@ body {
   /* height: 100vh; */
   /* background-color: rgba(0, 0, 0, 0.8); */
 
-  
   border-radius: 0px;
   padding: 20px 0px;
 
@@ -209,8 +205,8 @@ body {
   position: relative;
 }
 .helps span {
-    width: auto!important;
-    transition: all 0.1s!important;
+  width: auto !important;
+  transition: all 0.1s !important;
 }
 .helps span:hover {
   color: rgb(228, 127, 19);
@@ -257,7 +253,7 @@ body {
   border: 1px solid rgb(184, 21, 192);
   background-color: rgba(70, 26, 66, 0.6);
   width: 100%;
-  /* padding: 40px 0px 100px 0px; */
+  padding: 0px 8px 0px 8px;
   /* Fix cứng */
   height: 180px;
 
@@ -313,6 +309,44 @@ body {
 .answer:active {
   opacity: 1;
 }
+/* Css thay đổi thẻ đáp án khi đúng và sai */
+.correct-answer {
+  border: rgba(0, 177, 79, 1);
+  color: white;
+  transform: scale(1.025);
+  animation: correct-answer 200ms 4;
+}
+@keyframes correct-answer {
+  0% {
+    background-color: rgba(66, 130, 28, 1);
+  }
+  50% {
+    background-color: rgba(66, 130, 28, 0);
+  }
+  100% {
+    background-color: rgba(66, 130, 28, 1);
+    border: 1px solid rgb(92, 250, 1);
+  }
+}
+
+.wrong-answer {
+  border: rgba(228, 35, 19, 1);
+  /* background-color: rgba(228, 35, 19, 1) !important; */
+  color: white;
+  animation: wrong-answer 200ms 4;
+}
+@keyframes wrong-answer {
+  0% {
+    background-color: rgba(228, 35, 19, 1);
+  }
+  50% {
+    background-color: rgba(228, 35, 19, 0);
+  }
+  100% {
+    background-color: rgba(228, 35, 19, 1);
+    border: 1px solid rgb(228, 35, 19, 1);
+  }
+}
 
 /* Nút số chọn đáp án */
 .numerical-order {
@@ -326,23 +360,27 @@ body {
   right: 8px;
   text-align: center;
 }
-#option-1 {
+.option-1 {
   background-color: rgba(47, 109, 174, 0.9);
+  border: 1px solid rgba(47, 109, 174, 0.9);
 }
-#option-2 {
+.option-2 {
   background-color: rgba(44, 156, 166, 0.9);
+  border: 1px solid rgba(44, 156, 166, 0.9);
 }
-#option-3 {
+.option-3 {
   background-color: rgba(236, 168, 44, 0.9);
+  border: 1px solid rgba(236, 168, 44, 0.9);
 }
-#option-4 {
+.option-4 {
   background-color: rgba(212, 84, 106, 0.8);
+  border: 1px solid rgba(212, 84, 106, 0.8);
 }
 
 /* Nút chuyển câu */
 .buttons {
   /* width: 400px; */
-  
+
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -375,7 +413,7 @@ body {
   cursor: pointer;
 }
 .stop-quiz:hover {
-  background-color: rgba(228,35,19, 1);
+  background-color: rgba(228, 35, 19, 1);
   color: rgb(255, 255, 255);
 }
 
@@ -390,7 +428,6 @@ body {
   margin: auto;
   /* width: 50%; */
   padding: 20px 8px;
-
 }
 .result-page p {
   color: white;
@@ -414,7 +451,7 @@ body {
   -moz-transition: 0.5s ease-in-out;
   -ms-transition: 0.5s ease-in-out;
   -o-transition: 0.5s ease-in-out;
-  
+
   animation: up-down 2s 0.5s infinite;
   -webkit-animation: up-down 2s 0.5s infinite;
 }
@@ -447,15 +484,15 @@ body {
   .skip-question,
   .money-bonus,
   .helps {
-   width: 100%;
-   display: flex;
-   flex-direction: row;
-   justify-content: center;
-   align-items: center;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
   }
   .helps {
-      font-size: 14px;
-      justify-content: space-evenly!important;
+    font-size: 14px;
+    justify-content: space-evenly !important;
   }
 
   .questions {
@@ -547,5 +584,3 @@ body {
   }
 }
 /* End Responsive by @Media same  bootstrap*/
-
-
