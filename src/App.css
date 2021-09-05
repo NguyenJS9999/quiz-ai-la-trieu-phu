@@ -125,7 +125,49 @@ body {
   font-size: 28px;
   font-weight: 700;
 }
-.process {
+/* Thanh tiến trình/thời lượng đếm ngược */
+.process-title {
+  background: rgba(12,17,21, 0.8);
+  padding: 8px 12px; 
+  color: white;
+}
+.question-duration-process {
+  background-color: rgba(85, 65, 65, 0);
+  color: white;
+  padding: 2px 2px;
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+}
+.question-duration-actual-progress  {
+  background-color: rgb(238, 163, 65);
+  width: 100%;
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+  padding: 0px 0px;
+  text-align: center;
+}
+/* Thời lượng 30s cho sự trợ giúp từ người thân */
+.help-from-relatives-container {
+  /* border: 1px solid red; */
+  width: 100%;
+  padding: 0;;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.help-from-relatives-title {
+  background: rgba(12,17,21, 0.8);
+  padding: 8px 12px; 
+  color: white;
+}
+.help-from-relatives {
+  /* border: 1px solid red; */
   background-color: rgba(38, 38, 38, 0);
   color: white;
   padding: 2px 2px;
@@ -136,9 +178,9 @@ body {
   justify-content: start;
   align-items: center;
 }
-.actual-progress {
-  background-color: rgb(238, 163, 65);
-  width: 1%;
+.help-from-relatives-actual-progress {
+  background-color: rgb(163, 23, 19);
+  /* width: 100%; */
   color: rgb(255, 255, 255);
   font-size: 16px;
   padding: 0px 0px;
@@ -333,6 +375,7 @@ body {
   border: rgba(228, 35, 19, 1);
   /* background-color: rgba(228, 35, 19, 1) !important; */
   color: white;
+  transform: scale(0.925);
   animation: wrong-answer 200ms 4;
 }
 @keyframes wrong-answer {
