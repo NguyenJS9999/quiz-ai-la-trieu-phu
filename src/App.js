@@ -84,7 +84,7 @@ function App() {
       console.log('Thời gian trả lời câu hỏi của bạn đã hết, xóa interval ');
       clearInterval(interval);
       setTimeClockDurationNumber(0);
-      // stopTheGame();
+      stopTheGame();
     
     }
   } 
