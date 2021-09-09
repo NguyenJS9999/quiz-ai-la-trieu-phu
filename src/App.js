@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { quiz, MONEY_BONUS } from "./mockdata";
+import { QUIZ_DATA, MONEY_BONUS } from "./mockdata";
 
 function App() {
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState(0);
+  const dataLength = QUIZ_DATA.length;
+
   const [startPage, setStartPage] = useState(true);
   // Chuyển qua dùng state kiểu boolean
   const [questionPage, setQuestionPage] = useState(false);
   const [resultPage, setResultPage] = useState(false);
-  const [nextBtnDisable, setNextBtnDisable] = useState(true);
 
   const [hideNextBtn, setHideNextBtn] = useState(false);
   const [hideFinishBtn, setHideFinishBtn] = useState("d-none");
@@ -23,22 +24,28 @@ function App() {
   const [stateIsWrong, setIsWrong] = useState(false);
   const [stateChoiceIndex, setChoiceIndex] = useState(null);
 
-  const [score, setScore] = useState(0);
   const [stateMoneyBonus, setMoneyBonus] = useState(0);
 
   const [message, setMessage] = useState("");
   // Câu hỏi hiện tại lấy ra từ DATA ở index 0 - 1 mảng
-  const current_question = quiz[currentQuestionNumber];
-  // Thời gian đếm ngược 60s cho mỗi câu hỏi mới cho 100%
-  const [stateWidthByQuestionDuration, setWidthByQuestionDuration] = useState( 100 );
-  const [stateTimeClockDurationNumber, setTimeClockDurationNumber] = useState( 60 );
-  const timeClockDurationNumberRef = useRef()
-  console.log('timeClockDurationNumberRef', timeClockDurationNumberRef);
-  // Thời gian đếm ngược 30s cho Hỗ trợ gọi điện cho người thân
+  const current_question = QUIZ_DATA[currentQuestionNumber];
+
+  // Thời gian đếm ngược 15s cho Hỗ trợ gọi điện cho người thân
   const [stateWidthByHelpCallDuration, setWidthByHelpCallDuration] = useState( 100 );
-  const [stateHelpCallDuration, setHelpCallDuration] = useState(30);
+  const [stateHelpCallDuration, setHelpCallDuration] = useState(15);
   const [stateCssHelpCallDuration, setCssHelpCallDuration] = useState(false);
 
+ // Thời gian đếm ngược 60s cho mỗi câu hỏi mới cho 100%
+ const [stateWidthByQuestionDuration, setWidthByQuestionDuration] = useState( 100 );
+//  const [stateTimeClockDurationNumber, setTimeClockDurationNumber] = useState( 10 );
+
+  // Time countdown
+  const [counter, setCounter] = useState(null);
+  const timer = useRef(null);
+
+  const clearTimer = () => {
+    clearTimeout(timer.current);
+  };
 
   useEffect(() => {
     console.log("run useEffect on App");
@@ -48,58 +55,56 @@ function App() {
     console.log("run useRef on App");
   }) 
 
- 
-  function pressStart() {
+
+  function startGame() {
     setStartPage(false);
     setQuestionPage(true);
     setHideNextBtn(true);
+
+    setCounter(10);
+    
     setCssHelpCallDuration(false);
-    clearInterval(interval); 
     clearInterval(setInterval_call_help_from_relatives);
     // Bắt đầu tính time 60s cho câu hỏi số 1-được hiện lên và sau chuyển câu 
-    setIntervalQuestionDuration();
-   
   }
-  let interval;
-  function setIntervalQuestionDuration() {
-    clearInterval(interval);
-    // Đặt lại số time đ ngược và 100% width
-    setWidthByQuestionDuration( stateWidthByQuestionDuration, 100 );
-    setTimeClockDurationNumber( stateTimeClockDurationNumber, 60 );
 
-    interval = setInterval( countDownQuestionDuration, 1000 );
-    console.log('set interval 60s-question');
-  }
-  // Tạo time đếm ngược - time clock tác động đến width
-  let time_clock = stateTimeClockDurationNumber;
-  function countDownQuestionDuration() { console.log('Chạy setInterval')
-    if ( time_clock > 0 ) {     
-      let time_width_ratio = time_clock * (100 / 60);      
-      setWidthByQuestionDuration(time_width_ratio) // width
+  // Nút chuyển câu
+  function nextQuestion() {
+    // chuyển câu Xóa interval và cài lại số time
+    if ( currentQuestionNumber < dataLength - 1 ) {
+      console.log("Câu kế tiếp, dataLength", dataLength);
 
-      setTimeClockDurationNumber(time_clock --); // Number time
-      console.log('time_clock', time_clock)  
+      setCurrentQuestionNumber( currentQuestionNumber + 1 );
+      setChoiceBtnDisable(true);
+      // Gán lại time cho câu mới
+      // tạm
+      clearTimer();
+      setCounter(10);
+
+      setSuggestionCss("d-none");
+      setIsRight(false);
+      setIsWrong(false);
+      setChoiceIndex(null);
     } 
-    else if ( time_clock === 0 ) {
-      console.log('Thời gian trả lời câu hỏi của bạn đã hết, xóa interval ');
-      clearInterval(interval);
-      setTimeClockDurationNumber(0);
-      stopTheGame();
-    
+    else {
+      setCurrentQuestionNumber( dataLength - 1 );
+      setChoiceBtnDisable(false);
+      clearTimer();
     }
-  } 
+  
+  }
+ 
   // Kiểm tra kết quả
   function checkAnswer(event, index) {  console.log("Kiểm tra kết quả");
-    let current_answer = quiz[currentQuestionNumber].ans.trim();
+    let current_answer = QUIZ_DATA[currentQuestionNumber].ans.trim();
     let choice = event.target.textContent.trim(); 
-
 
     setChoiceIndex(index);
     if (choice === current_answer) { console.log("Trả lời đúng");
+      clearTimer();
       setIsRight(true);
       setIsWrong(false);
   
-      setScore(score + 10);
       let moneyBonusNum = MONEY_BONUS[currentQuestionNumber];
       setMoneyBonus(moneyBonusNum);
       
@@ -109,68 +114,49 @@ function App() {
     else {  console.log("Trả lời sai");
       setIsRight(false);
       setIsWrong(true);
-      setTimeout(stopTheGame, 2000);
+      setTimeout(endGame, 2000);
     }
     // Khi hoàn thành
-    if (currentQuestionNumber === quiz.length - 1) { 
+    if (currentQuestionNumber === dataLength - 1) { 
       setHideNextBtn(false);
       setHideFinishBtn("d-block, d-flex");
     }
     setChoiceBtnDisable(true);
-    setNextBtnDisable(false);
+
   }
   // Nút hỏi các nhà thông thái => đúng 100%
   function eruditeSuggestion() {
-    let current_answer = quiz[currentQuestionNumber].ans.trim();
+    let current_answer = QUIZ_DATA[currentQuestionNumber].ans.trim();
     console.log(`Chúng tôi khuyên bạn chọn đáp án: ${current_answer}`);
     setSuggestion(current_answer);
     setSuggestionCss("d-block");
   }
+
   // Set Interval Gọi điện cho người thân
   let setInterval_call_help_from_relatives;
-  function callAnAcquaintance() { console.log('Goi điện cho người thân, 30s đếm ngược')
+  function callAnAcquaintance() { console.log('Goi điện cho người thân, 15s đếm ngược')
     setCssHelpCallDuration(true);
     clearInterval(setInterval_call_help_from_relatives)
     setInterval_call_help_from_relatives = setInterval( count_down_call_An_Acquaintance , 1000);
   }
   // Hàm đếm ngược Gọi điện cho người thân
-  let time_call_help_from_relatives = 30;
+  let time_call_help_from_relatives = 15;
   function count_down_call_An_Acquaintance(){
     // setHelpCallDuration
     if ( time_call_help_from_relatives > 0  ) {
-      let time_call_help_from_relatives_width_ratio = time_call_help_from_relatives * (100 / 30);     
+      let time_call_help_from_relatives_width_ratio = time_call_help_from_relatives * (100 / 15);     
       setWidthByHelpCallDuration( time_call_help_from_relatives_width_ratio )
       setHelpCallDuration( time_call_help_from_relatives -- )
     }
     else if ( time_call_help_from_relatives === 0 ) {
       setHelpCallDuration(0)
       clearInterval(setInterval_call_help_from_relatives)
-      console.log('30s gọi điện cho người thân đã hết')
+      console.log('15s gọi điện cho người thân đã hết')
     }
   }
 
-  // Nút chuyển câu
-  function nextQuestion() {
-    console.log("Câu kế tiếp");
-    setSuggestionCss("d-none");
-    setIsRight(false);
-    setIsWrong(false);
-    setChoiceIndex(null);
-    // chuyển câu KO xóa interval và cài lại số time
-    setIntervalQuestionDuration()
-    
-    setWidthByQuestionDuration( 100 );
-    setTimeClockDurationNumber( 60 );
-
-
-    if (currentQuestionNumber < quiz.length - 1) {
-      setCurrentQuestionNumber(currentQuestionNumber + 1);
-      setChoiceBtnDisable(false);
-    }
-    setNextBtnDisable(true);
-  }
   // Dừng cuộc chơi
-  function stopTheGame() {
+  function endGame() {
     console.log("Dừng cuộc chơi vì không chắc chắn đáp án");
     setQuestionPage(false);
     setResultPage(true);
@@ -179,10 +165,15 @@ function App() {
     setIsRight(false);
     setIsWrong(false);
     setChoiceIndex(null);
-    score > 0
+
+    setCounter(0);
+    clearTimer();
+
+    stateMoneyBonus > 0
       ? setMessage("Chúc mừng bạn đã đã hoàn thành cuộc chơi!")
       : setMessage("Hơi tiếc bạn chưa đúng câu nào!");
   }
+
   // Màn thông báo kết quả
   function showResultPage() {
     setQuestionPage(false);
@@ -192,19 +183,19 @@ function App() {
     setIsRight(false);
     setIsWrong(false);
     setChoiceIndex(null);
-    score > 0
+    stateMoneyBonus > 0
       ? setMessage("Chúc mừng bạn đã đã hoàn thành cuộc chơi!")
       : setMessage("Hơi tiếc bạn chưa đúng câu nào!");
   }
+
   // Nút chơi lại - thay đổi giao diện và các giá trị về ban đầu
   function replay() {
     setStartPage(true);
     setResultPage(false);
     setCurrentQuestionNumber(0);
     setQuestionPage(false);
-    setNextBtnDisable("true");
+  
     setHideFinishBtn("d-none");
-    setScore(0);
     setMessage("");
     setChoiceBtnDisable(false);
 
@@ -213,21 +204,63 @@ function App() {
     setChoiceIndex(null);
   }
 
+  // Time countdown
+  useEffect( () => {
+    if ( counter > 0 ) {
+      timer.current = setTimeout(countDown, 1000); console.log('Thời gian đếm ngược, counter')
+      setWidthByQuestionDuration( (counter)  * 10 )
+      function countDown() {
+        // Giảm 
+        setCounter( (count) => count - 1);
+
+        if (counter === 1) {
+          
+          if (currentQuestionNumber < dataLength - 1) {
+            // Số thứ thự câu hỏi +1 (chuyển câu), gán lại 10s 
+            // setCurrentQuestionNumber(currentQuestionNumber + 1);
+            endGame()
+          } 
+          
+          else if  (counter < 0 ){
+            setWidthByQuestionDuration( 0 )
+            setCurrentQuestionNumber(dataLength - 1);
+            endGame()
+          }
+          
+        }
+
+      }
+
+      
+    } 
+    return clearTimer;
+
+  })
+
   return (
     <>
       {/* Màn hình bắt đầu che đi ban đầu */}
-      <div
-        className={` start-page  container-fluid p-0 ${
-          startPage ? "d-block" : "d-none"
-        }`}
-      >
+      <div className={` start-page  container-fluid p-0 ${
+            startPage ? "d-block" : "d-none"
+          }`
+        }>
+        
+        <div className="start-rule">
+          <span>
+            <p>Mỗi câu hỏi bạn có <b>10</b> giây để trả lời.</p>
+            <p>Đáp án chỉ được lựa chọn 1 lần.</p>
+          </span>
+        </div>
+        
+
         <button
           type="button"
           className="App-start-btn  btn btn-lg d-block mx-auto py-3 px-5 fs-3"
-          onClick={pressStart}
-        >
-          Start
+          onClick={startGame}
+        > Vào chơi
+
         </button>
+
       </div>
       
       {/* Màn hình để chơi */}
@@ -236,14 +269,13 @@ function App() {
           <span>
             <div className=" number-of-question ">
               {" "}
-              Câu hỏi: <b>{currentQuestionNumber + 1}</b>/10{" "}
+              Câu hỏi: <b>{currentQuestionNumber + 1}</b>/{ dataLength }{" "}
             </div>
           </span>
 
           <div className=" moneys-helps ">
             <div className=" money-bonus ">
-              Điểm&nbsp;{score} &nbsp; <i className="fas fa-dollar-sign" />{" "}
-              {stateMoneyBonus} vnđ
+              Mức tiền hiện tại:&nbsp;{stateMoneyBonus.toLocaleString()} vnđ
             </div>
 
             <div className=" helps ">
@@ -278,20 +310,24 @@ function App() {
         </div>
 
         {/* Thời lượng của 1 câu hỏi */}
-        <div className=' process-title '>Thời gian cho câu hỏi số <b>{currentQuestionNumber + 1}</b> với 60s bắt đầu</div>
+        <div className=' process-title '>
+          Thời gian cho câu hỏi số <b>{currentQuestionNumber + 1}</b> 
+          với 10s bắt đầu
+        </div>
+        
         <div className=" question-duration-process   container ">
 
-          <div style = {{width: ` calc( 0% + ${stateWidthByQuestionDuration}% ) `}} 
+          <div style = {{width: ` calc( ${stateWidthByQuestionDuration}% ) `}} 
             className=" question-duration-actual-progress ">
-              { stateTimeClockDurationNumber }s
+               {counter }s
             </div>
 
         </div>
 
-        {/* Thời lượng 30s cho trợ giúp từ người thân*/} 
+        {/* Thời lượng 15s cho trợ giúp từ người thân*/} 
         <div className= {`${stateCssHelpCallDuration ? 'd-flex' :  'd-none' } ' help-from-relatives-container   container ' `}  >
           
-          <div className=' help-from-relatives-title '>Bạn có {stateHelpCallDuration}s gọi điện cho người thân</div>
+          <div className=' help-from-relatives-title '>Bạn còn {stateHelpCallDuration}s gọi điện cho người thân</div>
           <div className=" help-from-relatives ">
             <div style = {{width: ` calc( 0% + ${stateWidthByHelpCallDuration}% ) `}}
                 className={` help-from-relatives-actual-progress `}>
@@ -336,9 +372,7 @@ function App() {
           <div className=" buttons ">
     
             <span
-              className={` ${ hideNextBtn ? 'd-flex' : 'd-none' } skip-question `}
-              onClick={stopTheGame}
-              disabled={nextBtnDisable}
+              className={` ${ hideNextBtn ? 'd-flex' : 'd-none' } skip-question `} onClick={endGame}
             >
               &nbsp;Không chắc chắn đáp án - dừng cuộc chơi!&nbsp;
             </span>
@@ -362,18 +396,12 @@ function App() {
           <p className="h2 text-center">{message}</p>
           <p className="h3 text-center">
             <span>
-              Số tiền bạn nhận được: <b>{stateMoneyBonus}&nbsp;vnđ</b>
-            </span>{" "}
-            <br />
-            Và{" "}
-            <span className="text-success">
-              <b>{score}</b>
-            </span>{" "}
-            điểm
+              Số tiền bạn nhận được: <b>{stateMoneyBonus.toLocaleString()}&nbsp;vnđ</b>
+            </span>
           </p>
 
           <button type="button" className="App-reply-btn " onClick={replay}>
-            Replay
+            Chơi lại
           </button>
         </div>
 

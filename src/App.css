@@ -55,16 +55,44 @@ body {
   background-repeat: no-repeat;
 }
 /* Mà hình che đi lúc mới vào */
+
 .start-page {
   /* border: 1px solid red; */
-  margin-top: 25%;
+  margin-top: 20%;
   /* min-height: 150px; */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .App-question-area {
   min-height: 150px;
 }
+.start-rule {
+  /* border: 1px solid red; */
+  /* background: rgba(210,105,30, 0.8); */
+  color: rgb(3, 22, 163);
+ 
+  margin-bottom: 8px;
+  width: 100%;
 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.start-rule span {
+  background: rgba(210,105,30, 0.8);
+  padding: 8px 12px;
+}
+.start-rule p {
+  margin: 0;
+  font-size: 24px;
+  text-align: center;
+}
 .App-start-btn {
+  margin: 12px 0px;
   background-color: rgba(19, 162, 228, 0.8);
   color: white;
   transition: 0.5s ease-in-out;
@@ -348,9 +376,9 @@ body {
 .answer:hover {
   opacity: 0.8;
 }
-.answer:active {
+/* .answer:active {
   opacity: 1;
-}
+} */
 /* Css thay đổi thẻ đáp án khi đúng và sai */
 .correct-answer {
   border: rgba(0, 177, 79, 1);
