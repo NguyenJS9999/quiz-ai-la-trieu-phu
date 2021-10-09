@@ -167,7 +167,7 @@ body {
 
   display: flex;
   flex-direction: row;
-  justify-content: start;
+  justify-content:  flex-start;
   align-items: center;
 }
 .question-duration-actual-progress  {
@@ -203,7 +203,7 @@ body {
 
   display: flex;
   flex-direction: row;
-  justify-content: start;
+  justify-content:  flex-start;
   align-items: center;
 }
 .help-from-relatives-actual-progress {

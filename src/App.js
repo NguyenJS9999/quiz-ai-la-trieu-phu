@@ -47,15 +47,6 @@ function App() {
     clearTimeout(timer.current);
   };
 
-  useEffect(() => {
-    console.log("run useEffect on App");
-  }, []);
-
-  useRef(() => {
-    console.log("run useRef on App");
-  }) 
-
-
   function startGame() {
     setStartPage(false);
     setQuestionPage(true);
@@ -72,7 +63,7 @@ function App() {
   function nextQuestion() {
     // chuyển câu Xóa interval và cài lại số time
     if ( currentQuestionNumber < dataLength - 1 ) {
-      console.log("Câu kế tiếp, dataLength", dataLength);
+      // console.log("Câu kế tiếp, dataLength", dataLength);
 
       setCurrentQuestionNumber( currentQuestionNumber + 1 );
       setChoiceBtnDisable(true);
@@ -95,12 +86,14 @@ function App() {
   }
  
   // Kiểm tra kết quả
-  function checkAnswer(event, index) {  console.log("Kiểm tra kết quả");
+  function checkAnswer(event, index) {  
+    // console.log("Kiểm tra kết quả");
     let current_answer = QUIZ_DATA[currentQuestionNumber].ans.trim();
     let choice = event.target.textContent.trim(); 
 
     setChoiceIndex(index);
-    if (choice === current_answer) { console.log("Trả lời đúng");
+    if (choice === current_answer) { 
+      // console.log("Trả lời đúng");
       clearTimer();
       setIsRight(true);
       setIsWrong(false);
@@ -108,10 +101,11 @@ function App() {
       let moneyBonusNum = MONEY_BONUS[currentQuestionNumber];
       setMoneyBonus(moneyBonusNum);
       
-      console.log('currentQuestionNumber', currentQuestionNumber)
+      // console.log('currentQuestionNumber', currentQuestionNumber)
       setTimeout(nextQuestion, 2000);
     } 
-    else {  console.log("Trả lời sai");
+    else {  
+      // console.log("Trả lời sai");
       setIsRight(false);
       setIsWrong(true);
       setTimeout(endGame, 2000);
@@ -127,14 +121,15 @@ function App() {
   // Nút hỏi các nhà thông thái => đúng 100%
   function eruditeSuggestion() {
     let current_answer = QUIZ_DATA[currentQuestionNumber].ans.trim();
-    console.log(`Chúng tôi khuyên bạn chọn đáp án: ${current_answer}`);
+    // console.log(`Chúng tôi khuyên bạn chọn đáp án: ${current_answer}`);
     setSuggestion(current_answer);
     setSuggestionCss("d-block");
   }
 
   // Set Interval Gọi điện cho người thân
   let setInterval_call_help_from_relatives;
-  function callAnAcquaintance() { console.log('Goi điện cho người thân, 15s đếm ngược')
+  function callAnAcquaintance() { 
+    // console.log('Goi điện cho người thân, 15s đếm ngược')
     setCssHelpCallDuration(true);
     clearInterval(setInterval_call_help_from_relatives)
     setInterval_call_help_from_relatives = setInterval( count_down_call_An_Acquaintance , 1000);
@@ -151,13 +146,13 @@ function App() {
     else if ( time_call_help_from_relatives === 0 ) {
       setHelpCallDuration(0)
       clearInterval(setInterval_call_help_from_relatives)
-      console.log('15s gọi điện cho người thân đã hết')
+      // console.log('15s gọi điện cho người thân đã hết')
     }
   }
 
   // Dừng cuộc chơi
   function endGame() {
-    console.log("Dừng cuộc chơi vì không chắc chắn đáp án");
+    // console.log("Dừng cuộc chơi vì không chắc chắn đáp án");
     setQuestionPage(false);
     setResultPage(true);
     setHideNextBtn(false) 
@@ -207,7 +202,8 @@ function App() {
   // Time countdown
   useEffect( () => {
     if ( counter > 0 ) {
-      timer.current = setTimeout(countDown, 1000); console.log('Thời gian đếm ngược, counter')
+      timer.current = setTimeout(countDown, 1000); 
+      // console.log('Thời gian đếm ngược, counter')
       setWidthByQuestionDuration( (counter)  * 10 )
       function countDown() {
         // Giảm 
@@ -349,7 +345,7 @@ function App() {
 
             {current_question.choices.map((choise, index) => (
 
-              <div
+              <div key={index}
                 onClick={(event) => checkAnswer(event, index)}
                 disabled={choiceBtnDisable}
                 className={` ${
